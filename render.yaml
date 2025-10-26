@@ -1,0 +1,34 @@
+services:
+  - type: web
+    name: medusa-store
+    env: node
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: medusa-db
+          property: connectionString
+      - key: REDIS_URL
+        value: rediss://default:ASK5AAImcDJiMzcxOTg0YTk4NmQ0ZmUwOWRmMTUzY2E3MmNiOGEzYXAyODg4OQ@clever-titmouse-8889.upstash.io:6379
+      - key: JWT_SECRET
+        generateValue: true
+      - key: COOKIE_SECRET
+        generateValue: true
+      - key: STORE_CORS
+        value: http://localhost:8000
+      - key: ADMIN_CORS
+        value: http://localhost:7001,http://localhost:7000
+      - key: AUTH_CORS
+        value: http://localhost:8000
+      - key: PORT
+        value: 10000
+
+databases:
+  - name: medusa-db
+    databaseName: medusa
+    user: medusa
+    plan: free
